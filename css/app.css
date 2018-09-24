@@ -1,0 +1,164 @@
+@charset "utf-8";
+@font-face {
+    font-family: 'yekan';
+    src: url('b_yekan.eot');
+    src: url('b_yekan.eot?#iefix') format('embedded-opentype'), 
+         url('b_yekan.woff') format('woff'),
+         url('b_yekan.ttf') format('truetype'),
+         url('b_yekan.svg#b_yekan') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+html,body{
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    font-family: Helvetica,Arial,sans-serif;
+    margin:0;
+	padding:0;
+    color:#000;
+}
+body{
+    background-image: url(../img/bg.png);
+    background-color: #fbfbfb;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    background-size: cover;
+}
+.stage{
+    position: fixed;
+    top:0;
+    left:0;
+    bottom:0;
+    right:0;
+    width:100%;
+    height: 100%;
+    display: none;
+}
+.btn{
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: #fe79b2;
+    text-align: center;
+    padding: 5px 15px;
+    color: #eee;
+    cursor: pointer;
+    font: bold 17px Helvetica;
+}
+.btn.go{
+    position: absolute;
+    right:10px;
+    bottom: 0;
+}
+.btn.reselect{
+    position: absolute;
+    right:80px;
+    bottom: 0;
+}
+.btn.timer{
+    position: absolute;
+    right:10px;
+    bottom: 0;
+}
+.container{
+    width: 1200px;
+    height: 100%;
+    margin: 0 auto;
+    position: relative;
+}
+.container .head{
+    margin-top: 30px;
+    padding: 0 10px;
+    overflow: auto;
+    position: relative;
+}
+.container .head img{
+    width: 200px;
+}
+.container .head span{
+    font-weight: bold;
+    font-style: italic;
+    font-size: 17px;
+    padding-left: 10px;
+    display: inline-block;
+    vertical-align: middle;
+    text-shadow: 0px 0px 0.25px #000;
+}
+.stage#start{
+    display: block;
+}
+.stage#start .body{
+    margin: 20px 0;
+}
+.stage#start .body .column{
+    float: right;
+    cursor: pointer;
+    width: 240px;
+    height: 320px;
+}
+.stage#start .body .column.active img{
+    background: #f8cbdf;
+    outline: none;
+    -webkit-box-shadow: inset 0px 0px 5px #c1c1c1;
+    -moz-box-shadow: inset 0px 0px 5px #c1c1c1;
+    box-shadow: inset 0px 0px 5px #c1c1c1;
+    padding: 10px;
+    width: 210px;
+    height: 290px;
+}
+.stage#start .body .column:hover img{
+    -webkit-box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.72);
+    -moz-box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.72);
+    box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.72);
+}
+.stage#start .body .column img{
+    margin: 5px;
+    padding: 15px;
+    width: 200px;
+    height: 280px;
+}
+.stage#during .body{
+    margin: 80px 0;
+}
+.stage#during .body .item{
+    width: 320px;
+    height: 430px;
+    float: right;
+    cursor: pointer;
+    position: relative;
+}
+.stage#during .body .item{
+    margin: 0 40px;
+    background-image: url('../img/box.png');
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+.stage#during .body .item img{
+    position: absolute;
+    width: 300px;
+    height: 410px;
+    top:10px;
+    left:10px;
+    right:10px;
+    bottom:10px;
+    opacity: 0;
+    z-index: 1;
+    /*
+    -webkit-transition: opacity 1s;
+    -moz-transition: opacity 1s;
+    -o-transition: opacity 1s;
+    transition: opacity 1s;
+    */
+}
+.stage#during .body .item img.showing{
+    opacity: 1;
+    z-index: 2;
+}
+.stage#end{
+    margin: 100px 0 0;
+    text-align: center;
+}
+.stage#end .body img{
+    height: 500px;
+    cursor: pointer;
+}
