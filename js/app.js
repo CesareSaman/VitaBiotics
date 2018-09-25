@@ -1,4 +1,5 @@
 var _items = [];
+var counDownTimer;
 var _final_res = true;
 var _started_game = false;
 var audios = [ new Audio('audio/select.wav'),
@@ -18,16 +19,20 @@ $(document).ready(function(){
     });
 });
 
+
 function selectedItem(item_num,img_num){console.log('clickedJS');
     _started_game = true;
-    $.imgObj = $('#item'+item_num+' img[data_item_rel='+img_num+']')
+    $.imgObj = $('#item'+item_num+' img[data_item_rel='+img_num+']');
     $.imgObj.css('opacity',1).siblings().remove();
+    
     if($.imgObj.attr('data_item_rel') == $.imgObj.parent().attr('data_item_rel')){
         playSound(1);
         $.imgObj.parent().addClass('won');
+        $('.stage#during .titleBox#titleBox'+(item_num)+' span').addClass('won');
     }else{
         playSound(2);
         $.imgObj.parent().addClass('lost');
+        $('.stage#during .titleBox#titleBox'+(item_num)+' span').addClass('lost');
         _final_res = false;
     }
     $('#curtain').css('right',((item_num+1)*33.33)+'%');
@@ -52,6 +57,7 @@ function go(){
     $('.column.active').each(function(e){
         _items.push($(this).attr('rel'));
         $('.stage#during .item#item'+(e+1)).attr('data_item_rel',$(this).attr('rel'));
+        $('.stage#during .titleBox#titleBox'+(e+1)+' span').text($(this).find('img').attr('alt'));
     });
     setTimeout(function(){
         $('.stage#start').fadeOut(function(){
@@ -72,7 +78,7 @@ function go(){
 
 function countDown(duration){
     var timer = duration, minutes, seconds;
-    setInterval(function () {
+    counDownTimer = setInterval(function () {
         minutes = parseInt(timer / 60, 10);
         seconds = parseInt(timer % 60, 10);
         minutes = minutes < 10 ? "0" + minutes : minutes;
@@ -98,7 +104,8 @@ function end(){
                 }else{
                     playSound(5);
                 }
-                delete audios[3];
+                $('#curtain').remove();
+                clearInterval(counDownTimer);
             });
         });    
     },1500);
