@@ -158,7 +158,20 @@ body{
     margin: 100px 0 0;
     text-align: center;
 }
+.stage#end .body{
+    position: relative;
+}
 .stage#end .body img{
     height: 500px;
     cursor: pointer;
+}
+.stage#end .body #winnergif{
+    position: absolute;
+    background: url(../img/fireworks.gif) no-repeat center center;
+    width:500px;
+    height:487px;
+    z-index: 2;
+    top: 0;
+    left: 350px;
+    display: none;
 }

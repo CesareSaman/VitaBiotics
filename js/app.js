@@ -1,55 +1,41 @@
 var _items = [];
-var _select = new Audio('audio/select.wav');
-var _winner = new Audio('audio/winner.wav');
-var _looser = new Audio('audio/looser.wav');
-var _end = new Audio('audio/end.mp3');
-
-
+var _final_res = true;
+var _started_game = false;
+var audios = [ new Audio('audio/select.wav'),
+               new Audio('audio/winner.wav'),
+               new Audio('audio/looser.wav'),
+               new Audio('audio/countdown.mp3'),
+               new Audio('audio/won.mp3'),
+               new Audio('audio/gameover.wav') ];
 $(document).ready(function(){
     $('.column').on('click',function(){
         if($('.column.active').length <= 2){
-            playSound(_select);
+            playSound(0);
             $(this).addClass('active');
         }else if($('.column.active').length > 2){
             return false;
         }
-    });    
-    $('.item#item1 img').on('click',function(){
-        $(this).css('opacity',1).siblings().remove();
-        if($(this).attr('data_item_rel') == $(this).parent().attr('data_item_rel')){
-            playSound(_winner);
-            $(this).parent().addClass('won');
-        }else{
-            playSound(_looser);
-            $(this).parent().addClass('lost');
-        }
-        $('#curtain').css('right','66.66%');
-        loop(2);
-    });
-    $('.item#item2 img').on('click',function(){
-        $(this).css('opacity',1).siblings().remove();
-        if($(this).attr('data_item_rel') == $(this).parent().attr('data_item_rel')){
-            playSound(_winner);
-            $(this).parent().addClass('won');
-        }else{
-            playSound(_looser);
-            $(this).parent().addClass('lost');
-        }
-        $('#curtain').css('right','100%');
-        loop(3);
-    });
-    $('.item#item3 img').on('click',function(){
-        $(this).css('opacity',1).siblings().remove();
-        if($(this).attr('data_item_rel') == $(this).parent().attr('data_item_rel')){
-            playSound(_winner);
-            $(this).parent().addClass('won');
-        }else{
-            playSound(_looser);
-            $(this).parent().addClass('lost');
-        }
-        end();
     });
 });
+
+function selectedItem(item_num,img_num){console.log('clickedJS');
+    _started_game = true;
+    $.imgObj = $('#item'+item_num+' img[data_item_rel='+img_num+']')
+    $.imgObj.css('opacity',1).siblings().remove();
+    if($.imgObj.attr('data_item_rel') == $.imgObj.parent().attr('data_item_rel')){
+        playSound(1);
+        $.imgObj.parent().addClass('won');
+    }else{
+        playSound(2);
+        $.imgObj.parent().addClass('lost');
+        _final_res = false;
+    }
+    $('#curtain').css('right',((item_num+1)*33.33)+'%');
+    if(item_num==3)
+        end();
+    else
+        loop(item_num+1);
+}
 
 function random_unique_array(){
     while(_items.length < 3){
@@ -70,7 +56,7 @@ function go(){
     setTimeout(function(){
         $('.stage#start').fadeOut(function(){
             $('.stage#during').fadeIn(function(){
-                for (var o=0;o<_items.length;o++){console.log(o);
+                for (var o=0;o<_items.length;o++){
                     $('.stage#during .body .item#item'+(o+1)+' img[data_item_rel='+_items[o]+']').css('opacity',1);   
                 }
                 setTimeout(function(){
@@ -92,6 +78,9 @@ function countDown(duration){
         minutes = minutes < 10 ? "0" + minutes : minutes;
         seconds = seconds < 10 ? "0" + seconds : seconds;
         $('.timer').text(minutes + ":" + seconds);
+        if(timer==8){
+            playSound(3);
+        }
         if (--timer < 0) {
             //timer = duration;
             end();
@@ -103,7 +92,13 @@ function end(){
     setTimeout(function(){
         $('.stage#during').fadeOut(function(){
             $('.stage#end').fadeIn(function(){
-                playSound(_end);
+                if(_started_game==true && _final_res==true){
+                    playSound(4);
+                    $('#winnergif').fadeIn();
+                }else{
+                    playSound(5);
+                }
+                delete audios[3];
             });
         });    
     },1500);
@@ -120,7 +115,6 @@ function loop(number) {
 }
 
 function playSound(_sound){
-    var sounds = document.getElementsByTagName('audio');
-    for(i=0; i<sounds.length; i++) sounds[i].pause();
-    _sound.play();
+    for (a = 0; a < audios.length; a++) {audios[a].pause();}
+    audios[_sound].play();
 }
