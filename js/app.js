@@ -1,7 +1,6 @@
 var _items = [];
 var counDownTimer;
-var _final_res = true;
-var _started_game = false;
+var _passed = [];
 var audios = [ new Audio('audio/select.wav'),
                new Audio('audio/winner.wav'),
                new Audio('audio/looser.wav'),
@@ -9,7 +8,7 @@ var audios = [ new Audio('audio/select.wav'),
                new Audio('audio/won.mp3'),
                new Audio('audio/gameover.wav') ];
 $(document).ready(function(){
-    $('.column').on('click',function(){
+    $('.column').on('click touchend',function(){
         if($('.column.active').length <= 2){
             playSound(0);
             $(this).addClass('active');
@@ -21,25 +20,23 @@ $(document).ready(function(){
 
 
 function selectedItem(item_num,img_num){console.log('clickedJS');
-    _started_game = true;
     $.imgObj = $('#item'+item_num+' img[data_item_rel='+img_num+']');
-    $.imgObj.css('opacity',1).siblings().remove();
     
     if($.imgObj.attr('data_item_rel') == $.imgObj.parent().attr('data_item_rel')){
+        _passed.push(item_num);
         playSound(1);
-        $.imgObj.parent().addClass('won');
-        $('.stage#during .titleBox#titleBox'+(item_num)+' span').addClass('won');
+        $.imgObj.css('opacity',1).siblings().remove();
+        $('.stage#during .titleBox#titleBox'+(item_num)+' span').removeClass('lost').addClass('won');
+        $('#curtain').css('right',((item_num+1)*33.33)+'%');
+        if(item_num==3){
+            end();
+        }else{
+            loop(item_num+1);
+        }
     }else{
         playSound(2);
-        $.imgObj.parent().addClass('lost');
         $('.stage#during .titleBox#titleBox'+(item_num)+' span').addClass('lost');
-        _final_res = false;
     }
-    $('#curtain').css('right',((item_num+1)*33.33)+'%');
-    if(item_num==3)
-        end();
-    else
-        loop(item_num+1);
 }
 
 function random_unique_array(){
@@ -51,8 +48,7 @@ function random_unique_array(){
     return _items;
 }
 
-function go(){
-    $('body').append('<div id="curtain" style="position:fixed;width:100%;height:100%;z-index:999;right:0;top:0;bottom:0;"></div>');
+function start(){
     $('.column').not('.active').animate({opacity: 0.1});
     $('.column.active').each(function(e){
         _items.push($(this).attr('rel'));
@@ -65,15 +61,17 @@ function go(){
                 for (var o=0;o<_items.length;o++){
                     $('.stage#during .body .item#item'+(o+1)+' img[data_item_rel='+_items[o]+']').css('opacity',1);   
                 }
-                setTimeout(function(){
-                    $('.stage#during .body .item img').removeAttr('style');
-                    $('#curtain').css('right','33%');
-                    countDown(30);
-                    loop(1);
-                },3000);
             });
         });
-    },3000);
+    },1000);
+}
+
+function go(){
+    $('body').append('<div id="curtain" style="position:fixed;width:100%;height:100%;z-index:999;right:0;top:0;bottom:0;"></div>');
+    $('.stage#during .body .item img').removeAttr('style');
+    $('#curtain').css('right','33%');
+    loop(1);
+    countDown(30);
 }
 
 function countDown(duration){
@@ -95,20 +93,20 @@ function countDown(duration){
 }
 
 function end(){
+    clearInterval(counDownTimer);
     setTimeout(function(){
         $('.stage#during').fadeOut(function(){
             $('.stage#end').fadeIn(function(){
-                if(_started_game==true && _final_res==true){
+                if(_passed.length == 3){
                     playSound(4);
                     $('#winnergif').fadeIn();
                 }else{
                     playSound(5);
                 }
                 $('#curtain').remove();
-                clearInterval(counDownTimer);
             });
         });    
-    },1500);
+    },3000);
 }
 
 function loop(number) {
@@ -122,6 +120,7 @@ function loop(number) {
 }
 
 function playSound(_sound){
-    for (a = 0; a < audios.length; a++) {audios[a].pause();}
+    //for (a = 0; a < audios.length; a++) {audios[a].pause();}
+    audios[_sound].loop = false;
     audios[_sound].play();
 }

@@ -45,19 +45,24 @@ body{
     cursor: pointer;
     font: bold 17px Helvetica;
 }
-.btn.go{
+.btn.start{
     position: absolute;
     right:10px;
     bottom: 0;
 }
 .btn.reselect{
     position: absolute;
-    right:80px;
+    right:90px;
     bottom: 0;
 }
 .btn.timer{
     position: absolute;
     right:10px;
+    bottom: 0;
+}
+.btn.go{
+    position: absolute;
+    right:90px;
     bottom: 0;
 }
 .container{
