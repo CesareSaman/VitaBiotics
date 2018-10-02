@@ -45,6 +45,24 @@ body{
     cursor: pointer;
     font: bold 17px Helvetica;
 }
+.btn.fs{
+    position: fixed;
+    top:2px;
+    right:48px;
+    z-index: 99;
+}
+.btn.X{
+    position: fixed;
+    top:2px;
+    right:2px;
+    z-index: 99;
+}
+.btn.re{
+    position: fixed;
+    top:2px;
+    right:110px;
+    z-index: 99;
+}
 .btn.start{
     position: absolute;
     right:10px;
@@ -66,9 +84,8 @@ body{
     bottom: 0;
 }
 .container{
-    width: 1200px;
+    width: 1000px;
     height: 100%;
-    margin: 0 auto;
     position: relative;
 }
 .container .head{
@@ -98,18 +115,18 @@ body{
 .stage#start .body .column{
     float: right;
     cursor: pointer;
-    width: 240px;
-    height: 320px;
+    width: 200px;
+    height: 260px;
 }
 .stage#start .body .column.active img{
-    background: #f8cbdf;
+    background: #C71585;
     outline: none;
-    -webkit-box-shadow: inset 0px 0px 5px #c1c1c1;
-    -moz-box-shadow: inset 0px 0px 5px #c1c1c1;
-    box-shadow: inset 0px 0px 5px #c1c1c1;
-    padding: 10px;
-    width: 210px;
-    height: 290px;
+    -webkit-box-shadow: inset 0px 0px 5px #C71585;
+    -moz-box-shadow: inset 0px 0px 5px #C71585;
+    box-shadow: inset 0px 0px 5px #C71585;
+    padding: 5px;
+    width: 180px;
+    height: 230px;
 }
 .stage#start .body .column:hover img{
     -webkit-box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.72);
@@ -118,52 +135,46 @@ body{
 }
 .stage#start .body .column img{
     margin: 5px;
-    padding: 15px;
-    width: 200px;
-    height: 280px;
+    padding: 5px;
+    width: 180px;
+    height: 230px;
 }
 .stage#during .body{
     margin: 80px 0 0;
     overflow: auto;
 }
 .stage#during .body .item{
-    width: 320px;
-    height: 430px;
+    width: 300px;
+    height: 400px;
     float: right;
     cursor: pointer;
     position: relative;
-    margin: 0 40px;
+    margin: 0 16px;
     background-image: url('../img/box.png');
     background-size: 100%;
     background-repeat: no-repeat;
 }
 .stage#during .body .item img{
     position: absolute;
-    width: 300px;
-    height: 410px;
-    top:10px;
-    left:10px;
-    right:10px;
-    bottom:10px;
+    width: 285px;
+    height: 385px;
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    bottom: 8px;
     opacity: 0;
     z-index: 1;
-    /*
-    -webkit-transition: opacity 1s;
-    -moz-transition: opacity 1s;
-    -o-transition: opacity 1s;
-    transition: opacity 1s;
-    */
 }
 .stage#during .body .item img.showing{
     opacity: 1;
     z-index: 2;
 }
 .stage#during .foot .titleBox{
-    width: 320px;
+    width: 310px;
     height: 60px;
     float: right;
     position: relative;
-    margin: 20px 40px;
+    margin: 20px 10px;
     text-align: center;
 }
 .stage#during .foot .titleBox span{
@@ -200,11 +211,21 @@ body{
 }
 .stage#end .body #winnergif{
     position: absolute;
-    background: url(../img/fireworks.gif) no-repeat center center;
-    width:500px;
-    height:487px;
+    background: url(../img/winnergif.gif) repeat;
+    width:100%;
+    height:100%;
     z-index: 2;
     top: 0;
-    left: 350px;
+    left: 0;
+    display: none;
+}
+.stage#end .body #loosergif{
+    position: absolute;
+    background: url(../img/loosergif.gif) no-repeat center center;
+    width:370px;
+    height:180px;
+    z-index: 2;
+    bottom: -150px;
+    left: 315px;
     display: none;
 }

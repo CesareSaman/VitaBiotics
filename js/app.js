@@ -1,6 +1,8 @@
+document.addEventListener('contextmenu', event => event.preventDefault());
 var _items = [];
 var counDownTimer;
-var _passed = [];
+//var _passed = [];
+var _passed = false;
 var audios = [ new Audio('audio/select.wav'),
                new Audio('audio/winner.wav'),
                new Audio('audio/looser.wav'),
@@ -23,7 +25,8 @@ function selectedItem(item_num,img_num){console.log('clickedJS');
     $.imgObj = $('#item'+item_num+' img[data_item_rel='+img_num+']');
     
     if($.imgObj.attr('data_item_rel') == $.imgObj.parent().attr('data_item_rel')){
-        _passed.push(item_num);
+        //_passed.push(item_num);
+        _passed = true;
         playSound(1);
         $.imgObj.css('opacity',1).siblings().remove();
         $('.stage#during .titleBox#titleBox'+(item_num)+' span').removeClass('lost').addClass('won');
@@ -49,25 +52,29 @@ function random_unique_array(){
 }
 
 function start(){
-    $('.column').not('.active').animate({opacity: 0.1});
-    $('.column.active').each(function(e){
-        _items.push($(this).attr('rel'));
-        $('.stage#during .item#item'+(e+1)).attr('data_item_rel',$(this).attr('rel'));
-        $('.stage#during .titleBox#titleBox'+(e+1)+' span').text($(this).find('img').attr('alt'));
-    });
-    setTimeout(function(){
-        $('.stage#start').fadeOut(function(){
-            $('.stage#during').fadeIn(function(){
-                for (var o=0;o<_items.length;o++){
-                    $('.stage#during .body .item#item'+(o+1)+' img[data_item_rel='+_items[o]+']').css('opacity',1);   
-                }
-            });
+    if ($('.column.active').length==3){
+        $('.column').not('.active').animate({opacity: 0.1});
+        $('.column.active').each(function(e){
+            _items.push($(this).attr('rel'));
+            $('.stage#during .item#item'+(e+1)).attr('data_item_rel',$(this).attr('rel'));
+            $('.stage#during .titleBox#titleBox'+(e+1)+' span').text($(this).find('img').attr('alt'));
         });
-    },1000);
+        setTimeout(function(){
+            $('.stage#start').fadeOut(function(){
+                $('.stage#during').fadeIn(function(){
+                    $('.stage#during .container').append('<div id="curtain" style="position:absolute;z-index:999;right:0;top:160px;bottom:160px;left:0;"></div>');
+                    for (var o=0;o<_items.length;o++){
+                        $('.stage#during .body .item#item'+(o+1)+' img[data_item_rel='+_items[o]+']').css('opacity',1);   
+                    }
+                });
+            });
+        },1000);
+    }else{
+        return false;
+    }
 }
 
 function go(){
-    $('body').append('<div id="curtain" style="position:fixed;width:100%;height:100%;z-index:999;right:0;top:0;bottom:0;"></div>');
     $('.stage#during .body .item img').removeAttr('style');
     $('#curtain').css('right','33%');
     loop(1);
@@ -97,11 +104,13 @@ function end(){
     setTimeout(function(){
         $('.stage#during').fadeOut(function(){
             $('.stage#end').fadeIn(function(){
-                if(_passed.length == 3){
+                //if(_passed.length == 3){
+                if(_passed){
                     playSound(4);
                     $('#winnergif').fadeIn();
                 }else{
                     playSound(5);
+                    $('#loosergif').fadeIn();
                 }
                 $('#curtain').remove();
             });
@@ -123,4 +132,29 @@ function playSound(_sound){
     //for (a = 0; a < audios.length; a++) {audios[a].pause();}
     audios[_sound].loop = false;
     audios[_sound].play();
+}
+
+var elem = document.documentElement;
+function openFullscreen() {
+    if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+    } else if (elem.mozRequestFullScreen) { /* Firefox */
+    elem.mozRequestFullScreen();
+    } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+    elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) { /* IE/Edge */
+    elem.msRequestFullscreen();
+    }
+}
+
+function closeFullscreen() {
+    if (document.exitFullscreen) {
+    document.exitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+    document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) {
+    document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) {
+    document.msExitFullscreen();
+    }
 }
