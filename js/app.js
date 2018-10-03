@@ -104,6 +104,7 @@ function end(){
     setTimeout(function(){
         $('.stage#during').fadeOut(function(){
             $('.stage#end').fadeIn(function(){
+                audios[3].loop = false;audios[3].pause();
                 /*if(_passed.length == 3){
                     playSound(4);
                     $('#winnergif').fadeIn();
