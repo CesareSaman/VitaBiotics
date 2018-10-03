@@ -2,7 +2,7 @@ document.addEventListener('contextmenu', event => event.preventDefault());
 var _items = [];
 var counDownTimer;
 //var _passed = [];
-var _passed = false;
+var _passed = 0;
 var audios = [ new Audio('audio/select.wav'),
                new Audio('audio/winner.wav'),
                new Audio('audio/looser.wav'),
@@ -26,7 +26,7 @@ function selectedItem(item_num,img_num){console.log('clickedJS');
     
     if($.imgObj.attr('data_item_rel') == $.imgObj.parent().attr('data_item_rel')){
         //_passed.push(item_num);
-        _passed = true;
+        _passed++;
         playSound(1);
         $.imgObj.css('opacity',1).siblings().remove();
         $('.stage#during .titleBox#titleBox'+(item_num)+' span').removeClass('lost').addClass('won');
@@ -104,18 +104,47 @@ function end(){
     setTimeout(function(){
         $('.stage#during').fadeOut(function(){
             $('.stage#end').fadeIn(function(){
-                //if(_passed.length == 3){
-                if(_passed){
+                /*if(_passed.length == 3){
                     playSound(4);
                     $('#winnergif').fadeIn();
                 }else{
                     playSound(5);
                     $('#loosergif').fadeIn();
+                }*/
+                switch(_passed){
+                    case 0:
+                        playSound(5);
+                        $('#badge').attr('src','img/prize/looser.png');
+                        $('#loosergif').fadeIn();
+                        break;
+                    case 1:
+                        playSound(4);
+                        $('#badge').attr('src','img/prize/bronze.png');
+                        $('#winnergif').fadeIn();
+                        break;
+                    case 2:
+                        playSound(4);
+                        $('#badge').attr('src','img/prize/silver.png');
+                        $('#winnergif').fadeIn();
+                        break;
+                    case 3:
+                        playSound(4);
+                        $('#badge').attr('src','img/prize/gold.png');
+                        $('#winnergif').fadeIn();
+                        break;
                 }
                 $('#curtain').remove();
+                setTimeout(function(){
+                    $('.stage#end').fadeOut(function(){
+                        $('.stage#end').remove();
+                        $('.stage#credits').fadeIn(function(){
+                            for (a = 0; a < audios.length; a++) {audios[a].loop = false;audios[a].pause();}
+                        });
+                    });
+                },6000);
             });
         });    
-    },3000);
+    },2000);
 }
 
 function loop(number) {

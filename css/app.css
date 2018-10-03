@@ -208,6 +208,7 @@ body{
 .stage#end .body img{
     height: 500px;
     cursor: pointer;
+    margin: 0 auto;
 }
 .stage#end .body #winnergif{
     position: absolute;
@@ -228,4 +229,15 @@ body{
     bottom: -150px;
     left: 315px;
     display: none;
+}
+.stage#credits{
+    margin: 100px 0 0;
+    text-align: center;
+}
+.stage#credits .body{
+    position: relative;
+}
+.stage#credits .body img{
+    height: 500px;
+    cursor: pointer;
 }
