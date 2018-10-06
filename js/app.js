@@ -62,7 +62,7 @@ function start(){
         setTimeout(function(){
             $('.stage#start').fadeOut(function(){
                 $('.stage#during').fadeIn(function(){
-                    $('.stage#during .container').append('<div id="curtain" style="position:absolute;z-index:999;right:0;top:160px;bottom:160px;left:0;"></div>');
+                    $('.stage#during .container').append('<div id="curtain" style="position:absolute;z-index:999;right:0;top:280px;bottom:160px;left:0;"></div>');
                     for (var o=0;o<_items.length;o++){
                         $('.stage#during .body .item#item'+(o+1)+' img[data_item_rel='+_items[o]+']').css('opacity',1);   
                     }
@@ -139,7 +139,7 @@ function end(){
                     $('.stage#end').fadeOut(function(){
                         $('.stage#end').remove();
                         $('.stage#credits').fadeIn(function(){
-                            for (a = 0; a < audios.length; a++) {audios[a].loop = false;audios[a].pause();}
+                            for (a = 0; a < audios.length; a++) {delete audios[a];}
                         });
                     });
                 },6000);

@@ -93,18 +93,24 @@ body{
     padding: 0 10px;
     overflow: auto;
     position: relative;
+    text-align: center;
 }
 .container .head img{
-    width: 200px;
+    width: 400px;
 }
 .container .head span{
     font-weight: bold;
+    display: block;
     font-style: italic;
-    font-size: 17px;
-    padding-left: 10px;
-    display: inline-block;
-    vertical-align: middle;
+    font-size: 20px;
     text-shadow: 0px 0px 0.25px #000;
+}
+.container .footpartner{
+    text-align: center;
+}
+.container .footpartner img{
+    max-width: 500px;
+    margin: 100px auto 0;
 }
 .stage#start{
     display: block;
