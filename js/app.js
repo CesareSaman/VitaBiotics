@@ -1,7 +1,6 @@
 document.addEventListener('contextmenu', event => event.preventDefault());
 var _items = [];
 var counDownTimer;
-//var _passed = [];
 var _passed = 0;
 var audios = [ new Audio('audio/select.wav'),
                new Audio('audio/winner.wav'),
@@ -21,12 +20,12 @@ $(document).ready(function(){
 });
 
 
-function selectedItem(item_num,img_num){console.log('clickedJS');
+function selectedItem(item_num,img_num){
     $.imgObj = $('#item'+item_num+' img[data_item_rel='+img_num+']');
     
     if($.imgObj.attr('data_item_rel') == $.imgObj.parent().attr('data_item_rel')){
-        //_passed.push(item_num);
-        _passed++;
+        $.imgObj.removeAttr('ontouchend');
+        _passed++;console.log(_passed);
         playSound(1);
         $.imgObj.css('opacity',1).siblings().remove();
         $('.stage#during .titleBox#titleBox'+(item_num)+' span').removeClass('lost').addClass('won');
@@ -90,10 +89,11 @@ function countDown(duration){
         seconds = seconds < 10 ? "0" + seconds : seconds;
         $('.timer').text(minutes + ":" + seconds);
         if(timer==8){
-            playSound(3);
+            if($('.stage#during').is(":visible") == true){
+                playSound(3);
+            }
         }
         if (--timer < 0) {
-            //timer = duration;
             end();
         }
     }, 1000);
@@ -105,13 +105,6 @@ function end(){
         $('.stage#during').fadeOut(function(){
             $('.stage#end').fadeIn(function(){
                 audios[3].loop = false;audios[3].pause();
-                /*if(_passed.length == 3){
-                    playSound(4);
-                    $('#winnergif').fadeIn();
-                }else{
-                    playSound(5);
-                    $('#loosergif').fadeIn();
-                }*/
                 switch(_passed){
                     case 0:
                         playSound(5);
@@ -133,14 +126,17 @@ function end(){
                         $('#badge').attr('src','img/prize/gold.png');
                         $('#winnergif').fadeIn();
                         break;
+                    default:
+                        playSound(4);
+                        $('#badge').attr('src','img/prize/bronze.png');
+                        $('#winnergif').fadeIn();
+                        break;
                 }
                 $('#curtain').remove();
                 setTimeout(function(){
                     $('.stage#end').fadeOut(function(){
                         $('.stage#end').remove();
-                        $('.stage#credits').fadeIn(function(){
-                            for (a = 0; a < audios.length; a++) {delete audios[a];}
-                        });
+                        $('.stage#credits').fadeIn();
                     });
                 },6000);
             });
@@ -159,7 +155,7 @@ function loop(number) {
 }
 
 function playSound(_sound){
-    //for (a = 0; a < audios.length; a++) {audios[a].pause();}
+    for (a = 0; a < audios.length; a++) {audios[a].pause();}
     audios[_sound].loop = false;
     audios[_sound].play();
 }
@@ -168,11 +164,11 @@ var elem = document.documentElement;
 function openFullscreen() {
     if (elem.requestFullscreen) {
     elem.requestFullscreen();
-    } else if (elem.mozRequestFullScreen) { /* Firefox */
+    } else if (elem.mozRequestFullScreen) {
     elem.mozRequestFullScreen();
-    } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+    } else if (elem.webkitRequestFullscreen) {
     elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) { /* IE/Edge */
+    } else if (elem.msRequestFullscreen) {
     elem.msRequestFullscreen();
     }
 }
