@@ -94,6 +94,7 @@ function countDown(duration){
             }
         }
         if (--timer < 0) {
+            $('.timer').text('00:00');
             end();
         }
     }, 1000);
