@@ -22,23 +22,23 @@ $(document).ready(function(){
 
 function selectedItem(item_num,img_num){
     $.imgObj = $('#item'+item_num+' img[data_item_rel='+img_num+']');
-    
+    $.imgObj.removeAttr('ontouchend');
+    $.imgObj.css('opacity',1).siblings().remove();
+    $('#curtain').css('right',((item_num+1)*33.33)+'%');
     if($.imgObj.attr('data_item_rel') == $.imgObj.parent().attr('data_item_rel')){
-        $.imgObj.removeAttr('ontouchend');
-        _passed++;console.log(_passed);
+        _passed++;
         playSound(1);
-        $.imgObj.css('opacity',1).siblings().remove();
-        $('.stage#during .titleBox#titleBox'+(item_num)+' span').removeClass('lost').addClass('won');
-        $('#curtain').css('right',((item_num+1)*33.33)+'%');
-        if(item_num==3){
-            end();
-        }else{
-            loop(item_num+1);
-        }
+        $('.stage#during .titleBox#titleBox'+(item_num)+' span').addClass('won');
     }else{
         playSound(2);
         $('.stage#during .titleBox#titleBox'+(item_num)+' span').addClass('lost');
     }
+    if(item_num==3){
+        end();
+    }else{
+        loop(item_num+1);
+    }
+    console.log(_passed);
 }
 
 function random_unique_array(){
@@ -152,11 +152,11 @@ function loop(number) {
         products[currentProduct].className = 'product';
         currentProduct = (currentProduct+1)%products.length;
         products[currentProduct].className = 'product showing';
-    },500);
+    },400); //500
 }
 
 function playSound(_sound){
-    for (a = 0; a < audios.length; a++) {audios[a].pause();}
+    //for (a = 0; a < audios.length; a++) {audios[a].pause();}
     audios[_sound].loop = false;
     audios[_sound].play();
 }
